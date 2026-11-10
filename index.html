@@ -14,315 +14,286 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f7ff',
-                            100: '#e0effe',
-                            500: '#0284c7',
-                            600: '#0369a1',
-                            700: '#075985',
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Inter -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom scrollbar for task list */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
+        /* Smooth transitions for theme toggle */
+        body, div, input, select, button {
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-200">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-full flex flex-col antialiased">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-30 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 transition-colors duration-200">
+    <!-- Header Section -->
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-sky-500/20">
+                <div class="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white font-bold text-xl shadow-sm">
                     X.9
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight">X.9 Task & Schedule Tracker</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Pusat Informasi & Tugas Kelas</p>
+                    <h1 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white leading-tight">X.9 Task & Schedule Tracker</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Kelola tugas dan piket kelas secara teratur</p>
                 </div>
             </div>
             
-            <button id="themeToggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-sky-500">
-                <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+            <button id="themeToggleBtn" onclick="toggleDarkMode()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Toggle Dark Mode">
+                <!-- Sun Icon -->
+                <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <!-- Moon Icon -->
+                <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
             </button>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
 
-        <!-- Stats Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Active Tasks Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-xl shrink-0">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                </div>
+        <!-- Stat Cards Section -->
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- Stat 1: Tugas Aktif -->
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tugas Aktif</p>
-                    <h3 id="statActiveTasks" class="text-2xl font-bold mt-0.5">0</h3>
+                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tugas Aktif</p>
+                    <h3 id="statActiveTasks" class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
             </div>
 
-            <!-- Completed Tasks Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xl shrink-0">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
+            <!-- Stat 2: Tugas Selesai -->
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tugas Selesai</p>
-                    <h3 id="statCompletedTasks" class="text-2xl font-bold mt-0.5">0</h3>
+                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tugas Selesai</p>
+                    <h3 id="statCompletedTasks" class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">0</h3>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
                 </div>
             </div>
 
-            <!-- Today's Duty Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-sky-500/10 dark:bg-sky-500/20 text-sky-500 flex items-center justify-center text-xl shrink-0">
-                    <i class="fa-solid fa-broom"></i>
+            <!-- Stat 3: Piket Hari Ini -->
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Piket Hari Ini</p>
+                    <h3 id="statTodayDuty" class="text-base font-bold text-gray-900 dark:text-white mt-1 truncate max-w-[180px]" title="Tidak ada piket">
+                        -
+                    </h3>
                 </div>
-                <div class="min-w-0 flex-1">
-                    <div class="flex items-center justify-between">
-                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Piket Hari Ini</p>
-                        <span id="currentDayBadge" class="text-[10px] font-semibold bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300 px-2 py-0.5 rounded-full">...</span>
-                    </div>
-                    <h3 id="statTodayDuty" class="text-sm font-semibold mt-1 truncate">Memuat...</h3>
+                <div class="w-12 h-12 rounded-xl bg-brand-50 dark:bg-brand-950/40 text-brand-500 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Action Bar for WhatsApp Export -->
-        <div class="bg-gradient-to-r from-sky-500 to-indigo-600 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Action Banner: Ekspor Pengingat Tugas -->
+        <section class="bg-gradient-to-r from-brand-500 to-blue-600 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="space-y-1 text-center sm:text-left">
-                <h3 class="font-bold text-base flex items-center justify-center sm:justify-start gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Pengingat Tugas & Mapel WhatsApp
-                </h3>
-                <p class="text-xs text-sky-100">Buat teks ringkasan pelajaran & tugas besok secara otomatis untuk dibagikan ke grup kelas.</p>
+                <h2 class="text-lg font-bold">Ekspor Format Pengingat WA Kelas</h2>
+                <p class="text-xs text-brand-100">Buat teks rangkuman mapel & tugas otomatis untuk dibagikan ke grup WhatsApp kelas.</p>
             </div>
-            <button onclick="exportTomorrowReminder()" class="w-full sm:w-auto px-5 py-2.5 bg-white text-sky-600 font-semibold rounded-xl text-sm hover:bg-sky-50 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 shrink-0">
-                <i class="fa-regular fa-copy"></i> Salin Pengingat Besok (WA)
+            <button onclick="openExportModal()" class="px-4 py-2.5 bg-white text-brand-600 hover:bg-brand-50 font-semibold text-sm rounded-xl shadow-sm transition shrink-0 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Ekspor Pengingat
             </button>
-        </div>
+        </section>
 
-        <!-- Main Content (2 Columns Layout) -->
+        <!-- Main Content 2 Columns -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-            <!-- LEFT COLUMN: Task Manager (Form + List) -->
-            <div class="lg:col-span-7 space-y-6">
-
-                <!-- Add Task Form -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-4">
-                    <h2 class="text-base font-semibold flex items-center gap-2">
-                        <i class="fa-solid fa-square-plus text-sky-500"></i> Tambah Tugas Baru
+            
+            <!-- Left Column: Form & Task List (7 Cols) -->
+            <section class="lg:col-span-7 space-y-6">
+                
+                <!-- Form Tambah Tugas -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <h2 class="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Tambah Tugas Baru
                     </h2>
-                    
-                    <form id="taskForm" class="space-y-4">
+                    <form id="taskForm" onsubmit="handleAddTask(event)" class="space-y-4">
                         <div>
-                            <label for="taskTitle" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Nama Tugas / Deskripsi *</label>
-                            <input type="text" id="taskTitle" required placeholder="Contoh: Kerjakan LKS Hal. 42 Nombor 1-10" 
-                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm transition-all">
+                            <label for="taskName" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Nama / Deskripsi Tugas</label>
+                            <input type="text" id="taskName" required placeholder="Contoh: mengerjakan seluruh soal BAB 1" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
                         </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
-                                <label for="taskSubject" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Mata Pelajaran *</label>
-                                <input type="text" id="taskSubject" required placeholder="Matematika" 
-                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm transition-all">
+                                <label for="subject" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Mata Pelajaran</label>
+                                <input type="text" id="subject" required placeholder="Contoh: SBK" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
                             </div>
 
                             <div>
-                                <label for="taskDeadline" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Tenggat Waktu *</label>
-                                <input type="date" id="taskDeadline" required 
-                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm transition-all">
+                                <label for="deadline" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Deadline</label>
+                                <input type="date" id="deadline" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
                             </div>
 
                             <div>
-                                <label for="taskPriority" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Prioritas *</label>
-                                <select id="taskPriority" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm transition-all">
-                                    <option value="rendah">Rendah</option>
-                                    <option value="sedang" selected>Sedang</option>
-                                    <option value="tinggi">Tinggi</option>
+                                <label for="priority" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Prioritas Status</label>
+                                <select id="priority" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                                    <option value="3">Tinggi (High)</option>
+                                    <option value="2" selected>Sedang (Medium)</option>
+                                    <option value="1">Rendah (Low)</option>
                                 </select>
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full py-2.5 px-4 bg-sky-500 hover:bg-sky-600 text-white font-medium rounded-xl text-sm transition-colors duration-150 flex items-center justify-center gap-2 shadow-sm shadow-sky-500/20 active:scale-[0.99]">
-                            <i class="fa-solid fa-plus text-xs"></i> Simpan Tugas
+                        <button type="submit" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-medium text-sm rounded-xl shadow-sm hover:shadow transition focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            Simpan Tugas
                         </button>
                     </form>
                 </div>
 
-                <!-- Task List Container -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <h2 class="text-base font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-sky-500"></i> Daftar Tugas PR & Proyek
+                <!-- Daftar Tugas -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            Daftar Tugas
                         </h2>
-
-                        <!-- Filter Buttons -->
-                        <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-900/60 p-1 rounded-xl text-xs">
-                            <button id="filterAll" class="filter-btn px-3 py-1.5 rounded-lg font-medium bg-white dark:bg-slate-800 shadow-sm text-sky-600 dark:text-sky-400" onclick="setFilter('all')">Semua</button>
-                            <button id="filterActive" class="filter-btn px-3 py-1.5 rounded-lg font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200" onclick="setFilter('active')">Belum</button>
-                            <button id="filterCompleted" class="filter-btn px-3 py-1.5 rounded-lg font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200" onclick="setFilter('completed')">Selesai</button>
-                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 italic">Diurutkan: Status Aktif & Priority tertinggi</span>
                     </div>
 
-                    <!-- Dynamic Task List -->
-                    <div id="taskList" class="space-y-3 max-h-[480px] overflow-y-auto pr-1">
-                        <!-- Tasks rendered by JS -->
+                    <ul id="taskList" class="space-y-3">
+                        <!-- Items rendered via JS -->
+                    </ul>
+
+                    <!-- Empty state -->
+                    <div id="emptyTaskState" class="hidden text-center py-8">
+                        <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada tugas yang ditambahkan.</p>
                     </div>
                 </div>
 
-            </div>
+            </section>
 
-            <!-- RIGHT COLUMN: Schedule / Duty Roster -->
-            <div class="lg:col-span-5 space-y-6">
-                
-                <!-- Class Subject Schedule -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-base font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-book-bookmark text-sky-500"></i> Jadwal Pelajaran
+            <!-- Right Column: Schedules (5 Cols) -->
+            <section class="lg:col-span-5 space-y-6">
+                <!-- Jadwal Pelajaran (Dari Gambar) -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            Jadwal Pelajaran
                         </h2>
-                        <span class="text-xs text-slate-400">X.9</span>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-full">X.9</span>
                     </div>
 
-                    <div id="classSubjectContainer" class="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
-                        <!-- Subjects rendered by JS -->
+                    <div id="classSubjectList" class="space-y-3">
+                        <!-- Subjects rendered via JS -->
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-5">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-base font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-calendar-days text-sky-500"></i> Jadwal Piket Kebersihan
+                <!-- Jadwal Piket Kebersihan -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            Jadwal Piket Kebersihan
                         </h2>
-                        <span class="text-xs text-slate-400">Senin - Jumat</span>
                     </div>
-
-                    <!-- Schedule Cards Container -->
-                    <div id="scheduleContainer" class="space-y-3">
-                        <!-- Days rendered by JS -->
+                    
+                    <div id="dutyScheduleList" class="space-y-3">
+                        <!-- Duty items rendered via JS -->
                     </div>
                 </div>
-
-            </div>
+            </section>
 
         </div>
-
     </main>
 
-    <!-- Export Modal Notification -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium">
-            <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600 text-lg"></i>
-            <span id="toastMessage">Teks berhasil disalin!</span>
+    <!-- Modal Export Pengingat WA -->
+    <div id="exportModal" class="fixed inset-0 bg-black/50 dark:bg-black/70 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-xl border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    Pratinjau Pengingat Tugas
+                </h3>
+                <button onclick="closeExportModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div>
+                <label for="exportDateSelect" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Pilih Tanggal Pengingat:</label>
+                <input type="date" id="exportDateSelect" onchange="generateExportText()" class="w-full px-3.5 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Teks Format WhatsApp:</label>
+                <textarea id="exportTextarea" rows="10" readonly class="w-full p-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-mono text-xs leading-relaxed focus:outline-none"></textarea>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button onclick="closeExportModal()" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl">
+                    Batal
+                </button>
+                <button onclick="copyExportText()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-xl shadow-sm flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    <span id="copyBtnText">Salin Teks</span>
+                </button>
+            </div>
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        Teks pengingat berhasil disalin ke clipboard!
+    </div>
+
     <!-- Footer -->
-    <footer class="mt-auto py-6 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-400 dark:text-slate-500">
-        <p>Kelas X.9 &copy; <span id="currentYear"></span> Task Tracker App</p>
+    <footer class="mt-auto py-4 border-t border-gray-200 dark:border-gray-800 text-center text-xs text-gray-500 dark:text-gray-400">
+        &copy; Kelas X.9 Task Tracker. Built for simplicity & efficiency.
     </footer>
 
-    <!-- JavaScript Logic -->
+    <!-- JavaScript Application Logic -->
     <script>
-        // Subject Schedule Data (From Handwritten Schedule Image)
-        const subjectSchedule = [
-            { day: "Senin", subjects: ["10 -> Heru Suhardiyanto (PAI)", "53 -> Debora Wanudya Kalyana (Fisika)", "11 -> Marini Dwi Sugiarti (MTK)", "7 -> Supono (Sosio)", "58 -> Angela A. Sasanti Lelido Putri (PKN)", "51 -> Dzar Izafauzia Nurdialna (Sejarah)"], shortMapel: ["PAI", "FISIKA", "MTK", "SOSIO", "PKN", "SEJARAH"] },
-            { day: "Selasa", subjects: ["10 -> Heru Suhardiyanto (PAI)", "57 -> Della Deas Herlindungan (B. Jawa)", "41 -> Bayu Kusuma Wardani (PJOK)", "06 -> Litha Wiranda (KIMIA)", "51 -> Djanita Nawangsari (GEO)", "18 -> Erick Maulana (Ekonomi)"], shortMapel: ["PAI", "B. JAWA", "PJOK", "KIMIA", "GEO", "EKONOMI"] },
-            { day: "Rabu", subjects: ["51 -> Djanita Nawangsari (GEO)", "06 -> Litha Wiranda (KIMIA)", "11 -> Marini Dwi Sugiarti (MTK)", "53 -> Debora Wanudya Kalyana (FISIKA)", "26 -> Siti Munawaroh (SBK)", "1 -> Dzar Izafauzia Nurdialna (Sejarah)"], shortMapel: ["GEO", "KIMIA", "MATH", "FISIKA", "SBK", "SEJARAH"] },
-            { day: "Kamis", subjects: ["46 -> Dwiyahti Utami (Biologi)", "7 -> Supono (SOSIO)", "42 -> Syawaludin Nur Rifai (BIN)", "15 -> Robi Setiawan (BING)", "33 -> Anari Anoviyan Dhani (TIK)"], shortMapel: ["BIOLOGI", "SOSIO", "BIN", "BING", "TIK"] },
-            { day: "Jumat", subjects: ["42 -> Syawaludin Nur Rifai (BIN)", "15 -> Robi Setiawan (BING)", "16 -> Yenidha Rusna Priskiana (B. Jerman)", "46 -> Dwiyahti Utami (Biologi)", "18 -> Erick Maulana (Ekonomi)"], shortMapel: ["BIN", "BING", "B. JERMAN", "BIOLOGI", "EKONOMI"] }
-        ];
-
-        // Default Duty Roster Data (Senin - Jumat)
-        const dutySchedule = [
-            { day: "Senin", members: ["Ahmad Rizky", "Budi Santoso", "Citra Kirana", "Dian Sastro", "Eko Prasetyo"] },
-            { day: "Selasa", members: ["Farhan Ali", "Gita Gutawa", "Hendra Setiawan", "Indah Permata", "Joko Widodo"] },
-            { day: "Rabu", members: ["Kevin Sanjaya", "Lesti Kejora", "Muhammad Fikri", "Nabila Syakieb", "Okto Maniani"] },
-            { day: "Kamis", members: ["Putri Marino", "Qory Sandioriva", "Raffi Ahmad", "Siti Badriah", "Taufik Hidayat"] },
-            { day: "Jumat", members: ["Umar Syarif", "Vina Panduwinata", "Wahyu Hidayat", "Yuni Shara", "Zulkifli Hasan"] }
-        ];
-
-        // State Management
-        let tasks = JSON.parse(localStorage.getItem('x9_tasks')) || [
-            { id: '1', title: 'mengerjakan tugas kelompok membuat histogram, data bisa berubah BB, TB, atau Ukuran sepatu anggota kelas, 🔈kelompoknya sama dengan kelompok clinometer', subject: 'Matematika', deadline: '2026-11-11', priority: 'tinggi', completed: false },
-            { id: '2', title: 'mengerjakan seluruh soal BAB 1', subject: 'SBK', deadline: '2026-11-11', priority: 'sedang', completed: false }
-        ];
-        let currentFilter = 'all';
-
-        // DOM Elements
-        const taskForm = document.getElementById('taskForm');
-        const taskList = document.getElementById('taskList');
-        const scheduleContainer = document.getElementById('scheduleContainer');
-        const classSubjectContainer = document.getElementById('classSubjectContainer');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-
-        // Stats Elements
-        const statActiveTasks = document.getElementById('statActiveTasks');
-        const statCompletedTasks = document.getElementById('statCompletedTasks');
-        const statTodayDuty = document.getElementById('statTodayDuty');
-        const currentDayBadge = document.getElementById('currentDayBadge');
-
-        // Init App
-        window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-            initTheme();
-            renderSubjectSchedule();
-            renderSchedule();
-            renderTasks();
-            updateStats();
-        });
-
-        // Theme Toggle Logic
-        function initTheme() {
-            const isDark = localStorage.getItem('theme') === 'dark' || 
-                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-                themeIcon.className = 'fa-solid fa-sun text-amber-400 text-lg';
-            } else {
-                document.documentElement.classList.remove('dark');
-                themeIcon.className = 'fa-solid fa-moon text-lg';
-            }
-        }
-
-        themeToggle.addEventListener('click', () => {
-            const isDarkMode = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            themeIcon.className = isDarkMode 
-                ? 'fa-solid fa-sun text-amber-400 text-lg' 
-                : 'fa-solid fa-moon text-lg';
-        });
-
-        // Task Submission
-        taskForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const newTask = {
+        // Data Jadwal Pelajaran (Hasil Ekstraksi Gambar)
+        const classSubjects = [
+            { day: 'Senin', subjects: ['PAI', 'FISIKA', 'MTK', 'SOSIO', 'PKN', 'SEJARAH'] },
+            { day: 'Selasa', subjects: ['PAI', 'B. JAWA', 'PJOK', 'KIMIA', 'GEO', 'EKONOMI'] },
+            { day: 'Rabu', subjects: ['GEO', 'KIMIA', 'MATH', 'FISIKA', 'SBK', 'SEJARAH']
