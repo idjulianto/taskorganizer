@@ -1,6 +1,5 @@
-```html
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,153 +12,133 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                        }
+                        slateBg: '#0f172a',
+                        cardDark: '#1e293b',
+                        cardDarkElevated: '#334155',
+                        lightBg: '#f8fafc',
+                        cardLight: '#f1f5f9',
+                        cardLightElevated: '#e2e8f0',
+                        brandAccent: '#38bdf8'
                     }
                 }
             }
         }
     </script>
-    <!-- Font Inter -->
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Smooth transitions for theme toggle */
-        body, div, input, select, button {
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        /* Custom scrollbar for task list */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.4);
+            border-radius: 9999px;
         }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-full flex flex-col antialiased">
+<body class="bg-slate-900 text-slate-100 min-h-screen transition-colors duration-200">
 
-    <!-- Header Section -->
-    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- HEADER -->
+        <header class="flex flex-col sm:flex-row justify-between items-center pb-6 mb-6 border-b border-slate-800 dark:border-slate-800 light-border">
+            <div class="flex items-center space-x-3 mb-4 sm:mb-0">
+                <div class="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl border border-sky-500/20">
+                    <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">X.9 Task & Schedule Tracker</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Pusat Informasi Tugas & Jadwal Kelompok Belajar</p>
+                </div>
+            </div>
+            
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white font-bold text-xl shadow-sm">
-                    X.9
-                </div>
+                <button id="exportBtn" onclick="openExportModal()" class="flex items-center space-x-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition-all">
+                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                    <span>Ekspor Format WA</span>
+                </button>
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-lg bg-slate-800 dark:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-all">
+                    <i data-lucide="sun" id="themeSunIcon" class="w-5 h-5 hidden"></i>
+                    <i data-lucide="moon" id="themeMoonIcon" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="theme-card p-5 rounded-xl border flex items-center justify-between">
                 <div>
-                    <h1 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white leading-tight">X.9 Task & Schedule Tracker</h1>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Kelola tugas dan piket kelas secara teratur</p>
+                    <p class="text-xs font-medium text-slate-400">Tugas Aktif</p>
+                    <h3 class="text-2xl font-bold text-sky-400 mt-1" id="statActive">0</h3>
+                </div>
+                <div class="p-3 bg-sky-500/10 text-sky-400 rounded-lg">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
                 </div>
             </div>
-            
-            <button id="themeToggleBtn" onclick="toggleDarkMode()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Toggle Dark Mode">
-                <!-- Sun Icon -->
-                <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                <!-- Moon Icon -->
-                <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-            </button>
+
+            <div class="theme-card p-5 rounded-xl border flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-slate-400">Tugas Selesai</p>
+                    <h3 class="text-2xl font-bold text-emerald-400 mt-1" id="statCompleted">0</h3>
+                </div>
+                <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg">
+                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                </div>
+            </div>
+
+            <div class="theme-card p-5 rounded-xl border flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-slate-400">Piket Hari Ini (<span id="currentDayName">-</span>)</p>
+                    <h3 class="text-sm font-semibold text-slate-200 mt-1 truncate max-w-[180px]" id="statPiketToday">Menghitung...</h3>
+                </div>
+                <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-lg">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
-
-        <!-- Stat Cards Section -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <!-- Stat 1: Tugas Aktif -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tugas Aktif</p>
-                    <h3 id="statActiveTasks" class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">0</h3>
-                </div>
-                <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Stat 2: Tugas Selesai -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tugas Selesai</p>
-                    <h3 id="statCompletedTasks" class="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">0</h3>
-                </div>
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Stat 3: Piket Hari Ini -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Piket Hari Ini</p>
-                    <h3 id="statTodayDuty" class="text-base font-bold text-gray-900 dark:text-white mt-1 truncate max-w-[180px]" title="Tidak ada piket">
-                        -
-                    </h3>
-                </div>
-                <div class="w-12 h-12 rounded-xl bg-brand-50 dark:bg-brand-950/40 text-brand-500 flex items-center justify-center shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- Action Banner: Ekspor Pengingat Tugas -->
-        <section class="bg-gradient-to-r from-brand-500 to-blue-600 rounded-2xl p-5 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="space-y-1 text-center sm:text-left">
-                <h2 class="text-lg font-bold">Ekspor Format Pengingat WA Kelas</h2>
-                <p class="text-xs text-brand-100">Buat teks rangkuman mapel & tugas otomatis untuk dibagikan ke grup WhatsApp kelas.</p>
-            </div>
-            <button onclick="openExportModal()" class="px-4 py-2.5 bg-white text-brand-600 hover:bg-brand-50 font-semibold text-sm rounded-xl shadow-sm transition shrink-0 flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                </svg>
-                Ekspor Pengingat
-            </button>
-        </section>
-
-        <!-- Main Content 2 Columns -->
+        <!-- MAIN CONTENT SECTION (2 COLUMNS) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <!-- Left Column: Form & Task List (7 Cols) -->
-            <section class="lg:col-span-7 space-y-6">
+
+            <!-- LEFT COLUMN: Task Form & Task List -->
+            <div class="lg:col-span-7 space-y-6">
                 
-                <!-- Form Tambah Tugas -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
-                    <h2 class="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
+                <!-- Task Form Container -->
+                <div class="theme-card p-6 rounded-xl border">
+                    <h2 class="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5 text-sky-400"></i>
                         Tambah Tugas Baru
                     </h2>
+                    
                     <form id="taskForm" onsubmit="handleAddTask(event)" class="space-y-4">
                         <div>
-                            <label for="taskName" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Nama / Deskripsi Tugas</label>
-                            <input type="text" id="taskName" required placeholder="Contoh: mengerjakan seluruh soal BAB 1" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Nama Tugas / Deskripsi</label>
+                            <input type="text" id="taskTitle" required placeholder="Contoh: Mengerjakan latihan soal BAB 1" 
+                                class="theme-input w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-700/60 focus:outline-none focus:border-sky-500 transition-colors">
                         </div>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label for="subject" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Mata Pelajaran</label>
-                                <input type="text" id="subject" required placeholder="Contoh: SBK" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
-                            </div>
 
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label for="deadline" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Deadline</label>
-                                <input type="date" id="deadline" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                                <label class="block text-xs font-medium text-slate-400 mb-1">Mata Pelajaran</label>
+                                <input type="text" id="taskSubject" required placeholder="Contoh: Matematika" 
+                                    class="theme-input w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-700/60 focus:outline-none focus:border-sky-500 transition-colors">
                             </div>
-
                             <div>
-                                <label for="priority" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Prioritas Status</label>
-                                <select id="priority" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                                <label class="block text-xs font-medium text-slate-400 mb-1">Deadline</label>
+                                <input type="date" id="taskDeadline" required 
+                                    class="theme-input w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-700/60 focus:outline-none focus:border-sky-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1">Prioritas (Status)</label>
+                                <select id="taskPriority" class="theme-input w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-700/60 focus:outline-none focus:border-sky-500 transition-colors">
                                     <option value="3">Tinggi (High)</option>
                                     <option value="2" selected>Sedang (Medium)</option>
                                     <option value="1">Rendah (Low)</option>
@@ -167,133 +146,489 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-medium text-sm rounded-xl shadow-sm hover:shadow transition focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                            Simpan Tugas
+                        <button type="submit" class="w-full py-2.5 px-4 bg-sky-500 hover:bg-sky-600 text-slate-950 font-semibold text-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Simpan Tugas
                         </button>
                     </form>
                 </div>
 
-                <!-- Daftar Tugas -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            Daftar Tugas
+                <!-- Task List Container -->
+                <div class="theme-card p-6 rounded-xl border">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                        <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                            <i data-lucide="list-todo" class="w-5 h-5 text-sky-400"></i>
+                            Daftar Tugas Kelas
                         </h2>
-                        <span class="text-xs text-gray-500 dark:text-gray-400 italic">Diurutkan: Status Aktif & Priority tertinggi</span>
+                        <span class="text-xs text-slate-400 italic">*Tugas dengan prioritas lebih tinggi otomatis berada di paling atas</span>
                     </div>
 
-                    <ul id="taskList" class="space-y-3">
-                        <!-- Items rendered via JS -->
-                    </ul>
-
-                    <!-- Empty state -->
-                    <div id="emptyTaskState" class="hidden text-center py-8">
-                        <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Belum ada tugas yang ditambahkan.</p>
+                    <!-- Filter / Sort Bar -->
+                    <div id="taskList" class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                        <!-- Tasks dynamically rendered here -->
                     </div>
                 </div>
+            </div>
 
-            </section>
+            <!-- RIGHT COLUMN: Schedule & Piket -->
+            <div class="lg:col-span-5 space-y-6">
 
-            <!-- Right Column: Schedules (5 Cols) -->
-            <section class="lg:col-span-5 space-y-6">
-                <!-- Jadwal Pelajaran (Dari Gambar) -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                <!-- Schedule Pelajaran Card -->
+                <div class="theme-card p-6 rounded-xl border">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
+                        <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                            <i data-lucide="book-open" class="w-5 h-5 text-sky-400"></i>
                             Jadwal Pelajaran
                         </h2>
-                        <span class="text-xs font-semibold px-2.5 py-1 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-full">X.9</span>
+                        <select id="scheduleDaySelect" onchange="renderSchedule()" class="theme-input px-2.5 py-1 text-xs rounded-lg border border-slate-700/60 focus:outline-none">
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                        </select>
                     </div>
 
-                    <div id="classSubjectList" class="space-y-3">
-                        <!-- Subjects rendered via JS -->
+                    <div id="scheduleSubjectsContainer" class="flex flex-wrap gap-2">
+                        <!-- Rendered subjects -->
                     </div>
                 </div>
 
-                <!-- Jadwal Piket Kebersihan -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                            Jadwal Piket Kebersihan
-                        </h2>
-                    </div>
-                    
-                    <div id="dutyScheduleList" class="space-y-3">
-                        <!-- Duty items rendered via JS -->
+                <!-- Piket Kebersihan Card -->
+                <div class="theme-card p-6 rounded-xl border">
+                    <h2 class="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-sky-400"></i>
+                        Jadwal Piket Kebersihan (Senin - Jumat)
+                    </h2>
+
+                    <div class="space-y-3" id="piketContainer">
+                        <!-- Piket items rendered here -->
                     </div>
                 </div>
-            </section>
 
+            </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Modal Export Pengingat WA -->
-    <div id="exportModal" class="fixed inset-0 bg-black/50 dark:bg-black/70 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-xl border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                    </svg>
-                    Pratinjau Pengingat Tugas
+    <!-- EXPORT MODAL -->
+    <div id="exportModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="theme-card max-w-lg w-full p-6 rounded-2xl border border-slate-700 shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-5 h-5 text-sky-400"></i>
+                    Format Pesan WhatsApp
                 </h3>
-                <button onclick="closeExportModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                <button onclick="closeExportModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <div>
-                <label for="exportDateSelect" class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Pilih Tanggal Pengingat:</label>
-                <input type="date" id="exportDateSelect" onchange="generateExportText()" class="w-full px-3.5 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-            </div>
+            <p class="text-xs text-slate-400 mb-3">Salin format rangkuman di bawah untuk dikirim ke grup kelas WhatsApp:</p>
 
-            <div>
-                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Teks Format WhatsApp:</label>
-                <textarea id="exportTextarea" rows="10" readonly class="w-full p-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-mono text-xs leading-relaxed focus:outline-none"></textarea>
-            </div>
+            <textarea id="exportTextarea" rows="12" readonly
+                class="theme-input w-full p-3 font-mono text-xs rounded-lg border border-slate-700/60 focus:outline-none resize-none leading-relaxed"></textarea>
 
-            <div class="flex items-center justify-end gap-3 pt-2">
-                <button onclick="closeExportModal()" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl">
+            <div class="mt-4 flex justify-end gap-3">
+                <button onclick="closeExportModal()" class="px-4 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800">
                     Batal
                 </button>
-                <button onclick="copyExportText()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-xl shadow-sm flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                    </svg>
-                    <span id="copyBtnText">Salin Teks</span>
+                <button onclick="copyExportText()" class="px-4 py-2 text-xs font-semibold rounded-lg bg-sky-500 hover:bg-sky-600 text-slate-950 flex items-center gap-2">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    Salin Teks
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
-        Teks pengingat berhasil disalin ke clipboard!
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-sky-500 text-slate-950 px-4 py-2.5 rounded-xl font-medium text-sm shadow-lg flex items-center gap-2">
+        <i data-lucide="check" class="w-4 h-4"></i>
+        <span id="toastMsg">Notifikasi</span>
     </div>
 
-    <!-- Footer -->
-    <footer class="mt-auto py-4 border-t border-gray-200 dark:border-gray-800 text-center text-xs text-gray-500 dark:text-gray-400">
-        &copy; Kelas X.9 Task Tracker. Built for simplicity & efficiency.
-    </footer>
-
-    <!-- JavaScript Application Logic -->
+    <!-- JAVASCRIPT APP LOGIC -->
     <script>
-        // Data Jadwal Pelajaran (Hasil Ekstraksi Gambar)
-        const classSubjects = [
-            { day: 'Senin', subjects: ['PAI', 'FISIKA', 'MTK', 'SOSIO', 'PKN', 'SEJARAH'] },
-            { day: 'Selasa', subjects: ['PAI', 'B. JAWA', 'PJOK', 'KIMIA', 'GEO', 'EKONOMI'] },
-            { day: 'Rabu', subjects: ['GEO', 'KIMIA', 'MATH', 'FISIKA', 'SBK', 'SEJARAH']
+        // Data Schedules & Piket Static Reference (Updated based on image provided)
+        const LESSON_SCHEDULE = {
+            "Senin": [
+                { code: "10", teacher: "Heru Suhardiyanto", subject: "PAI" },
+                { code: "53", teacher: "Debora Wanudya Kalyana", subject: "FISIKA" },
+                { code: "11", teacher: "Marini Dwi Sugiarti", subject: "MTK" },
+                { code: "7",  teacher: "Supono", subject: "SOSIO" },
+                { code: "58", teacher: "Angela A. Sasanti Lekdo Putri", subject: "PKN" },
+                { code: "1",  teacher: "Azaz Hafaneia Nurdialna", subject: "SEJARAH" }
+            ],
+            "Selasa": [
+                { code: "10", teacher: "Heru Suhardiyanto", subject: "PAI" },
+                { code: "57", teacher: "Bella Deas Perlindungan", subject: "B. JAWA" },
+                { code: "41", teacher: "Bayu Kusuma Wardani", subject: "PJOK" },
+                { code: "56", teacher: "Litha Wiranda", subject: "KIMIA" },
+                { code: "51", teacher: "Djanita Nawangsari", subject: "GEO" },
+                { code: "18", teacher: "Erick Maulana", subject: "EKONOMI" }
+            ],
+            "Rabu": [
+                { code: "51", teacher: "Djanita Nawangsari", subject: "GEO" },
+                { code: "56", teacher: "Litha Wiranda", subject: "KIMIA" },
+                { code: "11", teacher: "Marini Dwi Sugiarti", subject: "MTK" },
+                { code: "53", teacher: "Debora Wanudya Kalyana", subject: "FISIKA" },
+                { code: "26", teacher: "Siti Munsawaroh", subject: "SBK" },
+                { code: "1",  teacher: "Azaz Hafaneia Nurdialna", subject: "SEJARAH" }
+            ],
+            "Kamis": [
+                { code: "46", teacher: "Dwiya Utami", subject: "BIOLOGI" },
+                { code: "7",  teacher: "Supono", subject: "SOSIO" },
+                { code: "42", teacher: "Syawaludin Nur Rifa'i", subject: "BIN" },
+                { code: "15", teacher: "Robi Setiawan", subject: "BING" },
+                { code: "33", teacher: "Anari Anoviyan Dharma", subject: "TIK" }
+            ],
+            "Jumat": [
+                { code: "42", teacher: "Syawaludin Nur Rifa'i", subject: "BIN" },
+                { code: "15", teacher: "Robi Setiawan", subject: "BING" },
+                { code: "16", teacher: "Yenidha Rusna Priskiana", subject: "B. JERMAN" },
+                { code: "46", teacher: "Dwiya Utami", subject: "BIOLOGI" },
+                { code: "18", teacher: "Erick Maulana", subject: "EKONOMI" }
+            ]
+        };
+
+        const PIKET_SCHEDULE = {
+            "Senin": ["Aldi", "Alya", "Arrfa", "Ayatul", "Bagus", "Diya", "Fahra"],
+            "Selasa": ["Fairuza", "Faiza", "Filzah", "Geraldi", "Ghaitsa", "Giovanni", "Ikhwan"],
+            "Rabu": ["Jasindha", "Kalyca", "Karina", "Keyla", "Khansa", "Layyinah", "M. Azzam"],
+            "Kamis": ["M. Qoidul", "Nabilla", "Nadira", "Nasjwa", "Noviera", "Oka", "Putri"],
+            "Jumat": ["Radinka", "Satryadji", "Syifa", "Umar", "Varick", "Yuvika", "Zahra", "Zahwa"]
+        };
+
+        // App State
+        let tasks = JSON.parse(localStorage.getItem('x9_tasks')) || [
+            { id: '1', title: 'Mengerjakan tugas kelompok membuat histogram, data bisa berubah BB, TB, atau Ukuran sepatu anggota kelas, 🔈kelompoknya sama dengan kelompok clinometer', subject: 'Matematika', deadline: '2026-11-11', priority: 3, completed: false },
+            { id: '2', title: 'Mengerjakan seluruh soal BAB 1', subject: 'SBK', deadline: '2026-11-11', priority: 2, completed: false }
+        ];
+
+        let currentTheme = localStorage.getItem('x9_theme') || 'dark';
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderStats();
+            renderTasks();
+            renderSchedule();
+            renderPiket();
+            setCurrentDaySelect();
+            lucide.createIcons();
+        });
+
+        // Theme Handling
+        function initTheme() {
+            if (currentTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('themeSunIcon').classList.remove('hidden');
+                document.getElementById('themeMoonIcon').classList.add('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeSunIcon').classList.add('hidden');
+                document.getElementById('themeMoonIcon').classList.remove('hidden');
+            }
+            updateDynamicStyles();
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('x9_theme', currentTheme);
+            initTheme();
+        }
+
+        function updateDynamicStyles() {
+            // Apply neutral slightly lighter background for task list, input boxes, schedule & piket cards
+            const isDark = currentTheme === 'dark';
+            
+            document.querySelectorAll('.theme-card').forEach(el => {
+                if (isDark) {
+                    el.style.backgroundColor = '#1e293b'; // slate-800
+                    el.style.borderColor = '#334155'; // slate-700
+                } else {
+                    el.style.backgroundColor = '#f1f5f9'; // slate-100
+                    el.style.borderColor = '#cbd5e1'; // slate-300
+                }
+            });
+
+            document.querySelectorAll('.theme-input').forEach(el => {
+                if (isDark) {
+                    el.style.backgroundColor = '#334155'; // slightly lighter than container #1e293b
+                    el.style.color = '#f8fafc';
+                } else {
+                    el.style.backgroundColor = '#e2e8f0'; // slightly lighter than container #f1f5f9
+                    el.style.color = '#0f172a';
+                }
+            });
+
+            // Adjust body background
+            if (isDark) {
+                document.body.className = "bg-slate-900 text-slate-100 min-h-screen transition-colors duration-200";
+            } else {
+                document.body.className = "bg-slate-50 text-slate-900 min-h-screen transition-colors duration-200";
+            }
+        }
+
+        // Set Default Day Select matching Current Day
+        function setCurrentDaySelect() {
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const todayIndex = new Date().getDay();
+            const todayName = days[todayIndex];
+            
+            document.getElementById('currentDayName').innerText = todayName;
+
+            if (LESSON_SCHEDULE[todayName]) {
+                document.getElementById('scheduleDaySelect').value = todayName;
+            } else {
+                document.getElementById('scheduleDaySelect').value = "Rabu";
+            }
+            renderSchedule();
+        }
+
+        // Add New Task
+        function handleAddTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('taskTitle').value.trim();
+            const subject = document.getElementById('taskSubject').value.trim();
+            const deadline = document.getElementById('taskDeadline').value;
+            const priority = parseInt(document.getElementById('taskPriority').value);
+
+            if (!title || !subject || !deadline) return;
+
+            const newTask = {
+                id: Date.now().toString(),
+                title,
+                subject,
+                deadline,
+                priority,
+                completed: false
+            };
+
+            tasks.push(newTask);
+            saveAndRefresh();
+            document.getElementById('taskForm').reset();
+            showToast('Tugas berhasil ditambahkan!');
+        }
+
+        // Toggle Complete Task
+        function toggleTaskComplete(id) {
+            tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+            saveAndRefresh();
+        }
+
+        // Delete Task
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            saveAndRefresh();
+            showToast('Tugas berhasil dihapus');
+        }
+
+        // Save to LocalStorage and update UI
+        function saveAndRefresh() {
+            localStorage.setItem('x9_tasks', JSON.stringify(tasks));
+            renderTasks();
+            renderStats();
+        }
+
+        // Priority sorting logic: High priority status on top
+        function renderTasks() {
+            const listContainer = document.getElementById('taskList');
+            listContainer.innerHTML = '';
+
+            if (tasks.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-8 text-slate-500 text-sm">
+                        Belum ada tugas tersimpan. Tambahkan tugas di atas!
+                    </div>
+                `;
+                return;
+            }
+
+            // SORTING RULE: Higher Priority first (3=High, 2=Med, 1=Low), completed tasks move below uncompleted
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+                return b.priority - a.priority;
+            });
+
+            sortedTasks.forEach(task => {
+                const priorityBadge = task.priority === 3 
+                    ? '<span class="px-2 py-0.5 text-[10px] font-bold rounded bg-red-500/10 text-red-400 border border-red-500/20">Tinggi</span>'
+                    : task.priority === 2 
+                    ? '<span class="px-2 py-0.5 text-[10px] font-bold rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">Sedang</span>'
+                    : '<span class="px-2 py-0.5 text-[10px] font-bold rounded bg-slate-500/10 text-slate-400 border border-slate-500/20">Rendah</span>';
+
+                const taskEl = document.createElement('div');
+                taskEl.className = `theme-input p-4 rounded-xl border border-slate-700/40 flex items-start justify-between gap-3 transition-all ${task.completed ? 'opacity-50' : ''}`;
+                
+                taskEl.innerHTML = `
+                    <div class="flex items-start gap-3 min-w-0 flex-1">
+                        <button onclick="toggleTaskComplete('${task.id}')" class="mt-0.5 flex-shrink-0 text-slate-400 hover:text-emerald-400 transition-colors">
+                            <i data-lucide="${task.completed ? 'check-circle-2' : 'circle'}" class="w-5 h-5 ${task.completed ? 'text-emerald-400' : ''}"></i>
+                        </button>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2 flex-wrap mb-1">
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">${escapeHtml(task.subject)}</span>
+                                ${priorityBadge}
+                                <span class="text-[11px] text-slate-400 flex items-center gap-1">
+                                    <i data-lucide="calendar" class="w-3 h-3"></i> ${formatDate(task.deadline)}
+                                </span>
+                            </div>
+                            <p class="text-sm text-slate-200 ${task.completed ? 'line-through text-slate-400' : ''} break-words leading-relaxed">
+                                ${escapeHtml(task.title)}
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="deleteTask('${task.id}')" class="text-slate-500 hover:text-red-400 p-1 rounded-lg transition-colors flex-shrink-0">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+
+                listContainer.appendChild(taskEl);
+            });
+
+            lucide.createIcons();
+            updateDynamicStyles();
+        }
+
+        // Render Stats
+        function renderStats() {
+            const activeCount = tasks.filter(t => !t.completed).length;
+            const completedCount = tasks.filter(t => t.completed).length;
+
+            document.getElementById('statActive').innerText = activeCount;
+            document.getElementById('statCompleted').innerText = completedCount;
+
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const todayName = days[new Date().getDay()];
+            const piketList = PIKET_SCHEDULE[todayName];
+
+            if (piketList) {
+                document.getElementById('statPiketToday').innerText = piketList.join(', ');
+            } else {
+                document.getElementById('statPiketToday').innerText = "Libur Piket";
+            }
+        }
+
+        // Render Lessons Schedule
+        function renderSchedule() {
+            const day = document.getElementById('scheduleDaySelect').value;
+            const container = document.getElementById('scheduleSubjectsContainer');
+            const subjects = LESSON_SCHEDULE[day] || [];
+
+            container.innerHTML = subjects.map(item => `
+                <div class="theme-input p-3 rounded-lg border border-slate-700/50 w-full flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-sky-500/20 text-sky-400 border border-sky-500/30 flex-shrink-0">${item.code}</span>
+                        <div class="min-w-0">
+                            <div class="text-xs font-bold text-sky-400 truncate">${escapeHtml(item.subject)}</div>
+                            <div class="text-[11px] text-slate-400 truncate">${escapeHtml(item.teacher)}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateDynamicStyles();
+        }
+
+        // Render Cleaning Schedule (Piket)
+        function renderPiket() {
+            const container = document.getElementById('piketContainer');
+            container.innerHTML = '';
+
+            const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
+
+            days.forEach(day => {
+                const members = PIKET_SCHEDULE[day].join(', ');
+                const isToday = new Date().toLocaleDateString('id-ID', { weekday: 'long' }) === day;
+
+                const dayEl = document.createElement('div');
+                dayEl.className = `theme-input p-3.5 rounded-xl border border-slate-700/40 flex justify-between items-center ${isToday ? 'ring-1 ring-sky-500/50' : ''}`;
+                
+                dayEl.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-800 dark:bg-slate-700 text-slate-300">${day}</span>
+                        <span class="text-xs text-slate-300 font-medium">${members}</span>
+                    </div>
+                    ${isToday ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">HARI INI</span>' : ''}
+                `;
+
+                container.appendChild(dayEl);
+            });
+
+            updateDynamicStyles();
+        }
+
+        // Export Format Modal
+        function openExportModal() {
+            const daySelect = document.getElementById('scheduleDaySelect').value;
+            const subjects = LESSON_SCHEDULE[daySelect] || [];
+            
+            // Format text template specified in requirement
+            let formattedText = `teman teman izin mengingatkan untuk mapel dan tugas besok ya\n\n`;
+            formattedText += `${daySelect}, 11 November 2026\n`;
+            formattedText += `PELAJARAN\n`;
+            subjects.forEach(s => {
+                formattedText += `●${s.subject}\n`;
+            });
+
+            formattedText += `\nPEKERJAAN RUMAH\n`;
+
+            const uncompletedTasks = tasks.filter(t => !t.completed);
+            if (uncompletedTasks.length === 0) {
+                formattedText += `- (Tidak ada tugas)\n`;
+            } else {
+                uncompletedTasks.forEach(t => {
+                    formattedText += `-${t.subject} (${t.title})\n`;
+                });
+            }
+
+            document.getElementById('exportTextarea').value = formattedText;
+            document.getElementById('exportModal').classList.remove('hidden');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.add('hidden');
+        }
+
+        function copyExportText() {
+            const textarea = document.getElementById('exportTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            showToast('Teks berhasil disalin ke clipboard!');
+            closeExportModal();
+        }
+
+        // Toast Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Helper Utility Functions
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
